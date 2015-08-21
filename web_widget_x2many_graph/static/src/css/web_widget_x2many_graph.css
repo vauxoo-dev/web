@@ -1,0 +1,8 @@
+.oe_form_field_x2many_graph th.oe_link
+{
+    cursor: pointer;
+}
+.openerp .oe_form_field_x2many_graph .oe_list_content > tbody > tr > td.oe_list_field_cell
+{
+    white-space: normal;
+}
