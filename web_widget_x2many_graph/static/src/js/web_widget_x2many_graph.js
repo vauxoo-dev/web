@@ -28,16 +28,16 @@ openerp.web_widget_x2many_graph = function(instance)
     instance.web_widget_x2many_graph.FieldX2ManyGraph = instance.web.form.AbstractField.extend( {
         template: 'FieldX2ManyGraph',
         widget_class: 'oe_form_field_x2many_graph',
-        by_x_axis: {},
-        by_y_axis: {},
-        field_x_axis: 'sequence',
-        field_label_x_axis: 'Sequence',
-        field_y_axis: 'value',
-        field_label_y_axis: 'Value',
-        is_numeric: false,
-        fields: {},
+        field_x: 'sequence',
+        field_label_x: 'Sequence',
+        field_y: 'value',
+        field_label_y: 'Value',
         init: function (field_manager, node) {
             this._super(field_manager, node);
+            this.field_x = node.attrs.field_x ? node.attrs.field_x : this.field_x;
+            this.field_y = node.attrs.field_y ? node.attrs.field_y : this.field_y;
+            this.field_label_x = node.attrs.field_label_x ? node.attrs.field_label_x : this.field_label_x;
+            this.field_label_y = node.attrs.field_label_y ? node.attrs.field_label_y : this.field_label_y;
             this.dataset = new instance.web.form.One2ManyDataSet(this, this.field.relation);
             this.dataset.o2m = this;
             this.dataset.parent_view = this.view;
@@ -48,21 +48,6 @@ openerp.web_widget_x2many_graph = function(instance)
         {
             var self = this;
             this._super.apply(this, arguments);
-        },
-        data: function() {
-            var sin = [],
-                cos = [];
-            // Field View Information (trying to set the list of views to bring fields ordered)
-
-            arrangement = [{
-              values: sin,
-              key: 'Sine Wave',
-              color: '#ff7f0e'
-            },{
-              values: cos,
-              key: 'Cosine Wave',
-              color: '#2ca02c'
-            }];
         },
         get_value: function () {
             var value = this.get('value');
@@ -77,11 +62,11 @@ openerp.web_widget_x2many_graph = function(instance)
             }
             this.dataset.read_ids(show_value, fields).done(function(elements){
                 _.each(elements, function(elem){
-                   sin.push({x: elem.sequence, y: elem.value})
+                   sin.push({x: elem[self.field_x], y: elem[self.field_y]})
                 });
                 data = [{
                     values: sin,
-                    key: 'Labels',
+                    key: self.field.string,
                     color: '#ff7f0e'
                 }];
                 nv.addGraph(function() {
@@ -89,11 +74,11 @@ openerp.web_widget_x2many_graph = function(instance)
                         .useInteractiveGuideline(true);
 
                     chart.xAxis
-                        .axisLabel('Time (ms)')
+                        .axisLabel(self.field_label_x)
                         .tickFormat(d3.format(',r'));
 
                     chart.yAxis
-                        .axisLabel('Voltage (v)')
+                        .axisLabel(self.field_label_y)
                         .tickFormat(d3.format('.02f'));
 
                     d3.select('.nv_content svg')
