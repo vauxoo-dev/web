@@ -1,9 +1,7 @@
-.oe_form_field_x2many_graph th.oe_link
-{
+.oe_form_field_x2many_graph th.oe_link {
     cursor: pointer;
 }
-.openerp .oe_form_field_x2many_graph .oe_list_content > tbody > tr > td.oe_list_field_cell
-{
+.openerp .oe_form_field_x2many_graph .oe_list_content > tbody > tr > td.oe_list_field_cell {
     white-space: normal;
 }
 
@@ -22,4 +20,7 @@
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
+}
+.oe_form_field_x2many_graph svg {
+    height: 400px;
 }

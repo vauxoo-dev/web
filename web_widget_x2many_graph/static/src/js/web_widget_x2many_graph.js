@@ -44,8 +44,7 @@ openerp.web_widget_x2many_graph = function(instance)
             this.dataset.child_name = this.name;
             this.set_value([]);
         },
-        start: function()
-        {
+        start: function() {
             var self = this;
             this._super.apply(this, arguments);
         },
@@ -81,17 +80,19 @@ openerp.web_widget_x2many_graph = function(instance)
                         .axisLabel(self.field_label_y)
                         .tickFormat(d3.format('.02f'));
 
-                    d3.select('.nv_content svg')
-                        .datum(data)
-                        .transition().duration(500)
-                        .call(chart);
+                    self.content = d3.select('.nv_content svg')
+                                    .datum(data)
+                                    .transition().duration(500)
+                                    .call(chart);
 
                     nv.utils.windowResize(chart.update);
 
                     return chart;
                 });
             });
-
-        }
+        },
+        destroy: function () {
+            return this._super();
+        },
     });
 }
