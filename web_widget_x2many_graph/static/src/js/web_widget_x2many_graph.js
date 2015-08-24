@@ -25,65 +25,88 @@ openerp.web_widget_x2many_graph = function(instance)
         'x2many_graph',
         'instance.web_widget_x2many_graph.FieldX2ManyGraph');
 
-    instance.web_widget_x2many_graph.FieldX2ManyGraph = instance.web.form.FieldOne2Many.extend({
+    instance.web_widget_x2many_graph.FieldX2ManyGraph = instance.web.form.AbstractField.extend( {
         template: 'FieldX2ManyGraph',
         widget_class: 'oe_form_field_x2many_graph',
-
-        // those will be filled with rows from the dataset
         by_x_axis: {},
         by_y_axis: {},
-        field_x_axis: 'x',
-        field_label_x_axis: 'x',
-        field_y_axis: 'y',
-        field_label_y_axis: 'y',
-        field_value: 'value',
-        // information about our datatype
+        field_x_axis: 'sequence',
+        field_label_x_axis: 'Sequence',
+        field_y_axis: 'value',
+        field_label_y_axis: 'Value',
         is_numeric: false,
-        show_row_totals: true,
-        show_column_totals: true,
-        // this will be filled with the model's fields_get
         fields: {},
-
-        // read parameters
-        init: function(field_manager, node)
-        {
-            this.field_x_axis = node.attrs.field_x_axis || this.field_x_axis;
-            this.field_y_axis = node.attrs.field_y_axis || this.field_y_axis;
-            this.field_label_x_axis = node.attrs.field_label_x_axis || this.field_x_axis;
-            this.field_label_y_axis = node.attrs.field_label_y_axis || this.field_y_axis;
-            return this._super.apply(this, arguments);
+        init: function (field_manager, node) {
+            this._super(field_manager, node);
+            this.dataset = new instance.web.form.One2ManyDataSet(this, this.field.relation);
+            this.dataset.o2m = this;
+            this.dataset.parent_view = this.view;
+            this.dataset.child_name = this.name;
+            this.set_value([]);
         },
-
-        // return a field's value, id in case it's a one2many field
-        get_field_value: function(row, field, many2one_as_name)
-        {
-            if(this.fields[field].type == 'many2one' && _.isArray(row[field]))
-            {
-                if(many2one_as_name)
-                {
-                    return row[field][1];
-                }
-                else
-                {
-                    return row[field][0];
-                }
-            }
-            return row[field];
-        },
-
-        // set value from line graph not implemented yet.
-        set_value: function()
-        {},
-
         start: function()
         {
             var self = this;
-            return this._super.apply(this, arguments);
+            this._super.apply(this, arguments);
         },
+        data: function() {
+            var sin = [],
+                cos = [];
+            // Field View Information (trying to set the list of views to bring fields ordered)
 
-        // deactivate view related functions
-        load_views: function() {},
-        reload_current_view: function() {},
-        get_active_view: function() {},
+            arrangement = [{
+              values: sin,
+              key: 'Sine Wave',
+              color: '#ff7f0e'
+            },{
+              values: cos,
+              key: 'Cosine Wave',
+              color: '#2ca02c'
+            }];
+        },
+        get_value: function () {
+            var value = this.get('value');
+            return value
+        },
+        render_value: function(){
+            var self = this,
+                sin = [],
+                show_value = this.get_value();
+            if (this.field.views.graph){
+                var fields = this.field.views.graph.fields;
+            }
+            this.dataset.read_ids(show_value, fields).done(function(elements){
+                _.each(elements, function(elem){
+                   sin.push({x: elem.sequence, y: elem.value})
+                });
+                data = [{
+                    values: sin,
+                    key: 'Labels',
+                    color: '#ff7f0e'
+                }];
+                nv.addGraph(function() {
+                    var chart = nv.models.lineChart()
+                        .useInteractiveGuideline(true);
+
+                    chart.xAxis
+                        .axisLabel('Time (ms)')
+                        .tickFormat(d3.format(',r'));
+
+                    chart.yAxis
+                        .axisLabel('Voltage (v)')
+                        .tickFormat(d3.format('.02f'));
+
+                    d3.select('.nv_content svg')
+                        .datum(data)
+                        .transition().duration(500)
+                        .call(chart);
+
+                    nv.utils.windowResize(chart.update);
+
+                    return chart;
+                });
+            });
+
+        }
     });
 }

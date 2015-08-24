@@ -6,3 +6,20 @@
 {
     white-space: normal;
 }
+
+.oe_form_field_x2many_graph .axis path,
+.oe_form_field_x2many_graph .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.oe_form_field_x2many_graph .x.axis path {
+  display: none;
+}
+
+.oe_form_field_x2many_graph .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}

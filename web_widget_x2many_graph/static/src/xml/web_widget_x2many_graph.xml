@@ -1,7 +1,9 @@
 <templates>
     <t t-name="FieldX2ManyGraph">
         <div t-att-class="widget.widget_class">
-            <h1>Hello world</h1>h1>
+            <div class="nv_content">
+                <svg></svg>
+            </div>
                 <!--<thead>-->
                     <!--<tr class="oe_list_header_columns">-->
                         <!--<th />-->
