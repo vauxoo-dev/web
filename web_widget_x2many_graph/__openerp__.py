@@ -19,13 +19,13 @@
 #
 ##############################################################################
 {
-    "name": "2D matrix for x2many fields",
+    "name": "Line Graph for x2many fields",
     "version": "1.0",
-    "author": "Therp BV, "
+    "author": "Vauxoo, "
               "Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "category": "Hidden/Dependency",
-    "summary": "Show list fields as a matrix",
+    "summary": "Draw awesome one2many fields with graphs.",
     "depends": [
         'web',
     ],
