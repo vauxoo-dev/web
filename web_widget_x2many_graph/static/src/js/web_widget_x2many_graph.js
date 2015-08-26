@@ -30,22 +30,20 @@ openerp.web_widget_x2many_graph = function(instance)
         widget_class: 'oe_form_field_x2many_graph',
         field_x: 'sequence',
         field_label_x: 'Sequence',
-        field_y: 'value',
-        field_label_y: 'Value',
         init: function (field_manager, node) {
             this._super(field_manager, node);
             this.field_x = node.attrs.field_x ? node.attrs.field_x : this.field_x;
-            this.field_y = node.attrs.field_y ? node.attrs.field_y : this.field_y;
             this.field_label_x = node.attrs.field_label_x ? node.attrs.field_label_x : this.field_label_x;
-            this.field_label_y = node.attrs.field_label_y ? node.attrs.field_label_y : this.field_label_y;
             this.dataset = new instance.web.form.One2ManyDataSet(this, this.field.relation);
             this.dataset.o2m = this;
             this.dataset.parent_view = this.view;
             this.dataset.child_name = this.name;
             this.set_value([]);
+            this.attrs = node.attrs;
+            console.log(node);
+            console.log(field_manager);
         },
         start: function() {
-            var self = this;
             this._super.apply(this, arguments);
         },
         get_value: function () {
@@ -54,20 +52,29 @@ openerp.web_widget_x2many_graph = function(instance)
         },
         render_value: function(){
             var self = this,
-                sin = [],
                 show_value = this.get_value();
             if (this.field.views.graph){
                 var fields = this.field.views.graph.fields;
             }
+            var data = [];
+            /*
+            Assembling the data info to construct the graph.
+             */
+            _.map(fields, function(f, key){
+                self[key] = [];
+            });
             this.dataset.read_ids(show_value, fields).done(function(elements){
-                _.each(elements, function(elem){
-                   sin.push({x: elem[self.field_x], y: elem[self.field_y]})
+                _.map(fields, function(f, key){
+                    if (key != self.field_x) {
+                        _.each(elements, function (elem) {
+                            self[key].push({x: elem[self.field_x], y: elem[key]});
+                        });
+                        data.push({values: self[key], key: f.string, color: self['color_' + key]});
+                    }
                 });
-                data = [{
-                    values: sin,
-                    key: self.field.string,
-                    color: '#ff7f0e'
-                }];
+                /*
+                Adding the graph.
+                 */
                 nv.addGraph(function() {
                     var chart = nv.models.lineChart()
                         .useInteractiveGuideline(true);
