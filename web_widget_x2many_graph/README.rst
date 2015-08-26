@@ -25,7 +25,7 @@ Use this widget by saying::
 
 For example::
 
-    <field name="value_ids" nolabel="1" widget="x2many_graph" color_value="#2CA02C" color_sma="#FFBB78" color_cma="#1F77B4" color_wma="#D62728">
+    <field name="value_ids" widget="x2many_graph" color_value="#2CA02C" color_sma="#FFBB78" color_cma="#1F77B4" color_wma="#D62728">
         <graph >
             <field name="sequence"/>
             <field name="value"/>
@@ -35,17 +35,11 @@ For example::
         </graph>
     </field>
 
-This assumes that my_field refers to a model with the fields `x`, `y` and
-`value`. If your fields are named differently, pass the correct names as
-attributes::
-
-<field name="my_field" widget="x2many_2d_matrix" field_x_axis="my_field1" field_y_axis="my_field2" field_value="my_field3" />
-
 You can pass the following parameters:
 
 field_x::
 
-    The field which define X. (not mandatory you can set in your model a field named value).
+    The field which define X. (not mandatory you can set in your model a field named sequence).
 
 field_label_x::
 
@@ -58,8 +52,9 @@ color_[[field_name]]::
 Known issues / Roadmap
 ======================
 
-* it would be worth trying to instantiate the proper field widget and let it render the input
-
+* nolabel is ignored, this image will never bring a label, by default simply use an extra separator.
+* A graph will use always 100% of the width, pending the css dynamic attribute.
+* The height is wired.
 
 Bug Tracker
 ===========
