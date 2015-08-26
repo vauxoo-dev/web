@@ -1,32 +1,39 @@
-2D matrix for x2many fields
-===========================
+Multi Value Dimension
+=====================
 
-This module allows to show an x2many field with 3-tuples
-($x_value, $y_value, $value) in a table
+This module allows load a line graph per ordered pair in a x2many field.
 
-          $x_value1   $x_value2 
-========= =========== ===========
-$y_value1 $value(1/1) $value(2/1)
-$y_value2 $value(1/2) $value(2/2)
-========= =========== ===========
 
-where `value(n/n)` is editable.
-
-An example use case would be: Select some projects and some employees so that
-a manager can easily fill in the planned_hours for one task per employee. The
-result could look like this:
-
-.. image:: /web_widget_x2many_graph/static/description/screenshot.png
+.. image:: https://www.evernote.com/l/AJ5Fxuoyfn5DPZCq0oTlbakT4KWh7YisWL0B/image.png
     :alt: Screenshot
-
-The beauty of this is that you have an arbitrary amount of columns with this widget, trying to get this in standard x2many lists involves some quite agly hacks.
 
 Usage
 =====
 
 Use this widget by saying::
 
-<field name="my_field" widget="x2many_2d_matrix" />
+    <field name="field_one2many_ids" widget="x2many_graph" color_field_name="HEXCOLOR">
+        <graph >
+            <field name="sequence"/> <!-- default name for field_x -->
+             <!-- The rest of fields will be taken as Y -->
+            <field name="value"/>
+            <field name="sma"/>
+            <field name="cma"/>
+            <field name="wma"/>
+        </graph>
+    </field>
+
+For example::
+
+    <field name="value_ids" nolabel="1" widget="x2many_graph" color_value="#2CA02C" color_sma="#FFBB78" color_cma="#1F77B4" color_wma="#D62728">
+        <graph >
+            <field name="sequence"/>
+            <field name="value"/>
+            <field name="sma"/>
+            <field name="cma"/>
+            <field name="wma"/>
+        </graph>
+    </field>
 
 This assumes that my_field refers to a model with the fields `x`, `y` and
 `value`. If your fields are named differently, pass the correct names as
@@ -36,20 +43,17 @@ attributes::
 
 You can pass the following parameters:
 
-field_x_axis
-    The field that indicates the x value of a point
-field_y_axis
-    The field that indicates the y value of a point
-field_label_x_axis
-    Use another field to display in the table header
-field_label_y_axis
-    Use another field to display in the table header
-field_value
-    Show this field as value
-show_row_totals
-    If field_value is a numeric field, calculate row totals
-show_column_totals
-    If field_value is a numeric field, calculate column totals
+field_x::
+
+    The field which define X. (not mandatory you can set in your model a field named value).
+
+field_label_x::
+
+    Label for field_x
+
+color_[[field_name]]::
+
+    As much colors as fields you have in your graph view.
 
 Known issues / Roadmap
 ======================
@@ -63,7 +67,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/web/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us smashing it by providing a detailed and welcomed feedback
-`here <https://github.com/OCA/web/issues/new?body=module:%20web_widget_x2many_2d_matrix%0Aversion:%208.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`here <https://github.com/OCA/web/issues/new?body=module:%20web_widget_x2many_2d_graph%0Aversion:%208.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 
 Credits
@@ -72,7 +76,7 @@ Credits
 Contributors
 ------------
 
-* Holger Brunn <hbrunn@therp.nl>
+* Nhomar Hernández <nhomar@vauxoo.com>
 
 Maintainer
 ----------
