@@ -40,8 +40,6 @@ openerp.web_widget_x2many_graph = function(instance)
             this.dataset.child_name = this.name;
             this.set_value([]);
             this.attrs = node.attrs;
-            console.log(node);
-            console.log(field_manager);
         },
         start: function() {
             this._super.apply(this, arguments);
