@@ -91,12 +91,15 @@ openerp.web_m2x_options = function (instance) {
             var blacklist = this.get_search_blacklist();
             this.last_query = search_val;
 
-            var search_result = this.orderer.add(dataset.name_search(
+            var search_result = $.Deferred();
+            if (_.isUndefined(this.options.min_length) || (search_val.length >= parseInt(this.options.min_length))) {
+                search_result = this.orderer.add(dataset.name_search(
                 search_val,
                 new instance.web.CompoundDomain(
                     self.build_domain(), [["id", "not in", blacklist]]),
                 'ilike', this.limit + 1,
                 self.build_context()));
+            }
 
             var create_rights;
             if (!(self.options && (self.options.no_create || self.options.no_create_edit))) {

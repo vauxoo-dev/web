@@ -60,6 +60,9 @@ New options
 
   A dictionary to link field value with a HTML color.
   This option has to be used with field_color.
+
+  ``min_length`` *int*
+    Minimum length of characters to run autocomplete.
   
 
 
@@ -104,12 +107,12 @@ Example
 Your XML form view definition could contain::
 
     ...
-    <field name="partner_id" options="{'limit': 10, 'create': false, 'create_edit': false, 'search_more':true 'field_color':'state', 'colors':{'active':'green'}}"/>
+    <field name="partner_id" options="{'limit': 10, 'create': false, 'create_edit': false, 'search_more':true 'field_color':'state', 'colors':{'active':'green'} 'min_length': 3}"/>
     ...
 
 Note
 ----
 
 Double check that you have no inherited view that remote ``options`` you set on a field ! 
-If nothing work, add a debugger in the first ligne of ``get_search_result method`` and enable debug mode in OpenERP. When you write something in a many2one field, javascript debugger should pause. If not verify your installation.
+If nothing work, add a debugger in the first line of ``get_search_result method`` and enable debug mode in OpenERP. When you write something in a many2one field, javascript debugger should pause. If not verify your installation.
 
