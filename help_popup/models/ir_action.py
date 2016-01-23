@@ -29,8 +29,8 @@ class IrActionsActwindow(models.Model):
         string="End User Help",
         widget="html",
         help="Use this field to add custom content for documentation purpose\n"
-             "mainly by power users ")
+             "mainly for power users ")
     advanced_help = fields.Text(
         string="Advanced Help",
         help="Use this field to add custom content for documentation purpose\n"
-             "mainly by developers")
+             "mainly for developers")

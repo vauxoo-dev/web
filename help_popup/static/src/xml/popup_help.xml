@@ -9,6 +9,13 @@
                     </a>
                 </li>
             </ul>
+            <ul class="oe_view_manager_switch oe_button_group oe_right edit_help_button">
+                <li class="oe_e">
+                    <a class="edit_help">
+                        j
+                    </a>
+                </li>
+            </ul>
         </t>
     </t>
 </templates>

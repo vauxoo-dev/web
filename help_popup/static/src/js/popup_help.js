@@ -14,6 +14,9 @@ openerp.help_popup = function(instance, local) {
                 $elem.data('click-init', true);
                 if (self.action.id == undefined || (self.action.advanced_help == '' && self.action.enduser_help == '')) {
                     self.$el.find('.help_button').hide()
+                    self.$el.find('.edit_help_button').show()
+                } else {
+                    self.$el.find('.edit_help_button').hide()
                 }
                 $elem.on('click', function(e) {
                     var params = 'height=650, width=800, location=no, ';
@@ -24,7 +27,16 @@ openerp.help_popup = function(instance, local) {
                     setTimeout('my_window.focus()', 1);
                 });
                 return true;
-
+            });
+            self.$el.find('.edit_help').each(function () {
+                var $elem = $(this);
+                if ($elem.data('click-init')) {
+                    return true;
+                }
+                $elem.data('click-init', true);
+                $elem.on('click', function(e) {
+                    alert('Hello World.');
+                });
             });
             return res;
         },
