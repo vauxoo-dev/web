@@ -6,16 +6,14 @@ openerp.help_popup = function(instance, local) {
         do_create_view: function(view_type) {
             var self = this;
             var res = self._super(view_type);
-            self.$el.find('span.view_help').each(function () {
+            self.$el.find('.view_help').each(function () {
                 var $elem = $(this);
                 if ($elem.data('click-init')) {
                     return true;
                 }
                 $elem.data('click-init', true);
-                //alert('ee' + self.action)
-                console.log(self.action.id)
                 if (self.action.id == undefined || (self.action.advanced_help == '' && self.action.enduser_help == '')) {
-                    self.$el.find('span.view_help').hide()
+                    self.$el.find('.help_button').hide()
                 }
                 $elem.on('click', function(e) {
                     var params = 'height=650, width=800, location=no, ';
@@ -25,7 +23,6 @@ openerp.help_popup = function(instance, local) {
                     // allows to back to the window if opened previoulsy
                     setTimeout('my_window.focus()', 1);
                 });
-
                 return true;
 
             });
