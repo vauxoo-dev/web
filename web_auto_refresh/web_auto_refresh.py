@@ -76,10 +76,14 @@ BaseModel.unlink = unlink
 def auto_refresh_kanban_list(model):
     if model._name != 'bus.bus':
         module = model._name.split('.')[0]
-        if module not in ['ir', 'res', 'base', 'bus', 'im_chat', 'mail', 'email', 
+        if module not in ['ir', 'res', 'base', 'bus', 'im_chat', 'mail', 'email',
             'temp', 'workflow', 'wizard', 'email_template', 'mass']:
             action = model.env['ir.actions.act_window']
+            wired_count = 'stock.picking' == model._name and action.search_count(
+                [('res_model', '=', 'stock.picking.type'),
+                 ('auto_refresh', '>', '0')]) or 0
+
             cnt = action.search_count([('res_model', '=', model._name), ('auto_refresh', '>', '0')])
-            if cnt > 0:
+            if (wired_count or cnt) > 0:
                 bus = model.env['bus.bus']
-                bus.sendone('auto_refresh_kanban_list', model._name)
+                bus.sendone('auto_refresh_kanban_list', model._name == 'stock.picking'  and 'stock.picking.type' or model._name)

@@ -5,12 +5,16 @@
             var self = this,
                 channel = "auto_refresh_kanban_list";
             this.bus_on(channel, function(message) {            // generic auto referesh
+                console.log("MESSAGE", message);
                 var active_view = this.action_manager.inner_widget.active_view
                 if (typeof(active_view) != 'undefined'){   // in mail inbox page, no active view defined
                     var controller = this.action_manager.inner_widget.views[active_view].controller
                     var action = this.action_manager.inner_widget.action
-                    if ( action.auto_refresh>0 && active_view == "kanban" || active_view == "list"  &&
-                        controller.model == message  && ! controller.$buttons.hasClass('oe_editing')){
+                    console.log(controller);
+                    console.log(action.auto_refresh, active_view, controller.model, message);
+                    if (controller.fields_view.model == message  && action.auto_refresh > 0
+                        && active_view == "kanban" || action.auto_refresh > 0 && active_view == "list"  &&
+                        ! controller.$buttons.hasClass('oe_editing')){
                         if (active_view == "kanban"){
                             controller.do_reload();    // kanban view has do_reload
                         }
