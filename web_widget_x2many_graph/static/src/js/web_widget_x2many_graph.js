@@ -18,86 +18,43 @@
 //   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //############################################################################
+odoo.define('web.web_widget_x2many_graph', function (require) {
+"use strict";
 
-openerp.web_widget_x2many_graph = function(instance)
-{
-    instance.web.form.widgets.add(
-        'x2many_graph',
-        'instance.web_widget_x2many_graph.FieldX2ManyGraph');
+    var core = require('web.core'),
+        form_common = require('web.form_common'),
+        QWeb = core.qweb;
 
-    instance.web_widget_x2many_graph.FieldX2ManyGraph = instance.web.form.AbstractField.extend( {
-        template: 'FieldX2ManyGraph',
-        widget_class: 'oe_form_field_x2many_graph',
-        field_x: 'sequence',
-        field_label_x: 'Sequence',
-        init: function (field_manager, node) {
-            this._super(field_manager, node);
-            this.field_x = node.attrs.field_x ? node.attrs.field_x : this.field_x;
-            this.field_label_x = node.attrs.field_label_x ? node.attrs.field_label_x : this.field_label_x;
-            this.dataset = new instance.web.form.One2ManyDataSet(this, this.field.relation);
-            this.dataset.o2m = this;
-            this.dataset.parent_view = this.view;
-            this.dataset.child_name = this.name;
-            this.set_value([]);
-            this.attrs = node.attrs;
-        },
-        start: function() {
-            this._super.apply(this, arguments);
-        },
-        get_value: function () {
-            var value = this.get('value');
-            return value
-        },
+    var FieldX2ManyGraphWidget = form_common.AbstractField.extend(form_common.ReinitializeFieldMixin, {
         render_value: function(){
-            var self = this,
-                show_value = this.get_value();
-            if (this.field.views.graph){
-                var fields = this.field.views.graph.fields;
-            }
-            var data = [];
-            /*
-            Assembling the data info to construct the graph.
-             */
-            _.map(fields, function(f, key){
-                self[key] = [];
-            });
-            this.dataset.read_ids(show_value, fields).done(function(elements){
-                _.map(fields, function(f, key){
-                    if (key != self.field_x) {
-                        _.each(elements, function (elem) {
-                            self[key].push({x: elem[self.field_x], y: elem[key]});
-                        });
-                        data.push({values: self[key], key: f.string, color: self['color_' + key]});
-                    }
-                });
-                /*
-                Adding the graph.
-                 */
-                nv.addGraph(function() {
-                    var chart = nv.models.lineChart()
-                        .useInteractiveGuideline(true);
+            var info = JSON.parse(this.get('value'));
+            this.$el.html(QWeb.render('FieldX2ManyGraph', {}));
+            nv.addGraph(function() {
+                var chart = nv.models.lineChart()
+                    .useInteractiveGuideline(true);
 
-                    chart.xAxis
-                        .axisLabel(self.field_label_x)
-                        .tickFormat(d3.format(',r'));
+                chart.xAxis
+                    .axisLabel(info.label_x)
+                    .tickFormat(d3.format(',r'));
 
-                    chart.yAxis
-                        .axisLabel(self.field_label_y)
-                        .tickFormat(d3.format('.02f'));
+                chart.yAxis
+                    .axisLabel(info.label_y)
+                    .tickFormat(d3.format('.02f'));
 
-                    self.content = d3.select('.nv_content svg')
-                                    .datum(data)
-                                    .transition().duration(500)
-                                    .call(chart);
+                d3.select('.nv_content svg')
+                    .datum(info.content)
+                    .transition().duration(500)
+                    .call(chart);
 
-                    nv.utils.windowResize(chart.update);
+                nv.utils.windowResize(chart.update);
 
-                    return chart;
-                });
+                return chart;
             });
         },
         destroy: function () {
             return this._super();
         },
     });
-}
+    core.form_widget_registry.add('x2many_graph', FieldX2ManyGraphWidget);
+
+});
