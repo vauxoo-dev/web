@@ -18,21 +18,20 @@
 //   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //############################################################################
-odoo.define('web.web_widget_x2many_graph', function (require) {
+odoo.define('web.web_widget_json_graph', function (require) {
 "use strict";
 
     var core = require('web.core'),
         form_common = require('web.form_common'),
         QWeb = core.qweb;
 
-    var FieldX2ManyGraphWidget = form_common.AbstractField.extend(form_common.ReinitializeFieldMixin, {
+    var JSONGraphWidget = form_common.AbstractField.extend(form_common.ReinitializeFieldMixin, {
         render_value: function(){
             var info = JSON.parse(this.get('value'));
-            this.$el.html(QWeb.render('FieldX2ManyGraph', {}));
+            this.$el.html(QWeb.render('JSONGraph', {}));
             nv.addGraph(function() {
                 var chart = nv.models.lineChart()
                     .useInteractiveGuideline(true);
-
                 chart.xAxis
                     .axisLabel(info.label_x)
                     .tickFormat(d3.format(',r'));
@@ -42,7 +41,7 @@ odoo.define('web.web_widget_x2many_graph', function (require) {
                     .tickFormat(d3.format('.02f'));
 
                 d3.select('.nv_content svg')
-                    .datum(info.content)
+                    .datum(info.data)
                     .transition().duration(500)
                     .call(chart);
 
@@ -55,6 +54,6 @@ odoo.define('web.web_widget_x2many_graph', function (require) {
             return this._super();
         },
     });
-    core.form_widget_registry.add('x2many_graph', FieldX2ManyGraphWidget);
+    core.form_widget_registry.add('json_graph', JSONGraphWidget);
 
 });
