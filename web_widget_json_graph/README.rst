@@ -49,7 +49,7 @@ The JSON needs to be like::
     }
     self.field_text_json = json.dumps(info)
 
-JSON example:
+JSON example::
 
     fields = ['sequence', 'value', 'sma', 'cma']
     field_x = 'sequence'

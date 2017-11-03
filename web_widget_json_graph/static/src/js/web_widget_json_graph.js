@@ -21,9 +21,9 @@
 odoo.define('web.web_widget_json_graph', function (require) {
 "use strict";
 
-    var core = require('web.core'),
-        form_common = require('web.form_common'),
-        QWeb = core.qweb;
+    var core = require('web.core');
+    var form_common = require('web.form_common');
+    var QWeb = core.qweb;
 
     var JSONGraphWidget = form_common.AbstractField.extend(form_common.ReinitializeFieldMixin, {
         render_value: function(){
