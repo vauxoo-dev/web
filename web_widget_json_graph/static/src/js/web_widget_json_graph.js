@@ -1,21 +1,12 @@
 //-*- coding: utf-8 -*-
 //############################################################################
 //
-//   OpenERP, Open Source Management Solution
-//   This module copyright (C) 2015 Therp BV <http://therp.nl>.
+//   Module Writen For Odoo, Open Source Management Solution
 //
-//   This program is free software: you can redistribute it and/or modify
-//   it under the terms of the GNU Affero General Public License as
-//   published by the Free Software Foundation, either version 3 of the
-//   License, or (at your option) any later version.
-//
-//   This program is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU Affero General Public License for more details.
-//
-//   You should have received a copy of the GNU Affero General Public License
-//   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//   Copyright (c) 2017 Vauxoo - http://www.vauxoo.com
+//   All Rights Reserved.
+//   info Vauxoo (info@vauxoo.com)
+//   coded by: Jose Robles <josemanuel@vauxoo.com>
 //
 //############################################################################
 odoo.define('web.web_widget_json_graph', function (require) {
@@ -29,6 +20,10 @@ odoo.define('web.web_widget_json_graph', function (require) {
         render_value: function(){
             var info = JSON.parse(this.get('value'));
             this.$el.html(QWeb.render('JSONGraph', {}));
+            /*jsl:ignore*/
+            /*
+            Ignoring lint erros caused by nv and d3 variables from NVD3.js
+            */
             nv.addGraph(function() {
                 var chart = nv.models.lineChart()
                     .useInteractiveGuideline(true);
@@ -49,6 +44,7 @@ odoo.define('web.web_widget_json_graph', function (require) {
 
                 return chart;
             });
+            /*jsl:end*/
         },
         destroy: function () {
             return this._super();
