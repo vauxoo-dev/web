@@ -18,6 +18,6 @@
     'data': [
         'views/web_no_bubble.xml',
     ],
-    'installable': True,
+    'installable': False,
     'application': False,
 }
