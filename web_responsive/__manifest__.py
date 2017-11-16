@@ -11,7 +11,7 @@
     "website": "https://laslabs.com/",
     "author": "LasLabs, Tecnativa, Odoo Community Association (OCA)",
     "license": "LGPL-3",
-    "installable": True,
+    "installable": False,
     "depends": [
         'web',
     ],

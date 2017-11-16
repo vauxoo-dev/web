@@ -21,6 +21,6 @@
     'qweb': [
         'static/src/xml/web_x2many_delete_all.xml'
     ],
-    'installable': True,
+    'installable': False,
     'application': False,
 }
