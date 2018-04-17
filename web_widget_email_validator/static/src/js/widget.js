@@ -30,6 +30,10 @@ odoo.define('web_widget_email_validator', function(require){
 	    _onChange: function() {
 	        this._super.apply(this, arguments);
 	        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	        value = this.$input.val()
+	        if (!value){
+	            return true;
+	        }
 	        var res =  re.test(String(this.$input.val()).toLowerCase());
 	    	this._isValid = res;
 	    	if (!res) {
