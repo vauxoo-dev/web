@@ -36,9 +36,6 @@ odoo.define('web_widget_email_validator', function(require){
 	        }
 	        var res =  re.test(String(this.$input.val()).toLowerCase());
 	    	this._isValid = res;
-	    	if (!res) {
-	    		this.do_warn(_t('Error'), _t('Invalid email format'));
-	    	}
 	    },
 	    _renderReadonly: function () {
 	        this.$el.text(this.value)
