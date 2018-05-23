@@ -34,7 +34,7 @@ odoo.define('web_widget_datepicker_options.datepicker', function(require) {
     Widget.DateTimeWidget.include({
         init: function() {
             this._super.apply(this, arguments);
-            if(typeof this.__parentedParent !== 'undefined' && this.__parentedParent.field.type === 'date' && this.__parentedParent.nodeOptions){
+            if(typeof this.__parentedParent !== 'undefined' && this.__parentedParent.field.type === 'datetime' && this.__parentedParent.nodeOptions){
                 var datepicker = this.__parentedParent.nodeOptions.datepicker;
                 Object.assign(this.options, datepicker);
             }
